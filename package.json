@@ -1,40 +1,39 @@
 {
-  "name": "touchstone-affiliate-plus",
+  "name": "touchstone-backend",
   "version": "1.0.0",
-  "private": true,
-  "description": "AI-powered creative studio for Touchstone Essentials affiliates",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:frontend": "vite",
-    "dev:backend": "cd backend && npm run dev",
-    "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "vite build",
-    "build:backend": "cd backend && npm run build",
-    "start": "cd backend && npm start",
-    "db:migrate": "cd backend && npx prisma migrate dev",
-    "db:seed": "cd backend && npx prisma db seed",
-    "db:studio": "cd backend && npx prisma studio"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:generate": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "lucide-react": "^0.555.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-markdown": "^9.0.3",
-    "react-router-dom": "^7.6.1",
-    "recharts": "^3.1.0",
-    "zustand": "^5.0.5"
+    "@prisma/client": "6.5.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.3.2",
+    "@fastify/cors": "^11.0.0",
+    "@fastify/helmet": "^13.0.1",
+    "@fastify/rate-limit": "^10.2.1",
+    "@fastify/jwt": "^9.0.2",
+    "@fastify/cookie": "^11.0.2",
+    "ioredis": "^5.6.1",
+    "openai": "^4.97.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/cors": "^2.8.17",
     "@types/node": "^22.14.0",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "autoprefixer": "^10.4.21",
-    "concurrently": "^9.1.2",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.3",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "prisma": "6.5.0",
+    "tsx": "^4.19.3",
+    "typescript": "~5.8.2"
   }
 }
