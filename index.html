@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <title>Touchstone Essentials - Affiliate+</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#47b85d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Touchstone+" />
+    <link rel="apple-touch-icon" href="https://i.imgur.com/7J9Xl0m.png" />
+    <meta name="description" content="AI-powered creative studio for Touchstone Essentials Digital Partners" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <link rel="icon" type="image/png" href="https://i.imgur.com/7J9Xl0m.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#47b85d',
+              'primary-dark': '#2e8b42',
+              secondary: '#6b7280',
+              accent: '#1a3a6c',
+              success: '#10b981',
+              warning: '#f59e0b',
+              error: '#ef4444',
+            },
+            fontFamily: {
+              sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+      * { font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+      
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+      .touchstone-gradient {
+        background: linear-gradient(135deg, #47b85d 0%, #2e8b42 100%);
+      }
+      
+      .touchstone-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
+      }
+
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .animate-spin { animation: spin 1s linear infinite; }
+
+      /* PWA Install prompt */
+      .pwa-install-prompt {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #47b85d;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(71,184,93,0.4);
+        z-index: 9999;
+        cursor: pointer;
+        font-weight: 600;
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-900 antialiased overflow-hidden">
+    <div id="root"></div>
+    <div class="pwa-install-prompt" id="pwa-install">
+      📱 Install Touchstone Affiliate+
+    </div>
+    <script type="module" src="/src/index.tsx"></script>
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('✅ Service Worker registered'))
+            .catch(err => console.log('Service Worker registration failed:', err));
+        });
+      }
+
+      // PWA Install prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('pwa-install');
+        installBtn.style.display = 'block';
+        
+        installBtn.addEventListener('click', () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((result) => {
+            if (result.outcome === 'accepted') {
+              console.log('✅ PWA installed');
+            }
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
